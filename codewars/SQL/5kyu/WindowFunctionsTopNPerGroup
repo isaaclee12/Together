@@ -1,0 +1,20 @@
+select c.id as "category_id", c.category, t.title as "title", t.views as "views", t.id as "post_id"
+from (
+   select *,
+          rank() over (partition by p.category_id order by views desc, p.id) as rnk
+   from posts p
+) as t right join categories c on (t.category_id = c.id)
+where coalesce(rnk, 0) <= 2
+order by c.category, t.views desc, post_id;
+
+
+-- SELECT rank_filter.* FROM (
+--       SELECT p.title, c.id as category_id, c.category, p.id as post_id,
+--       RANK() OVER (
+--           PARTITION BY c.category
+--           ORDER BY p.views DESC,
+--           p.id
+--       ) AS views
+--       FROM categories as c  
+--       JOIN posts as p ON c.id = p.category_id
+--   ) rank_filter WHERE COALESCE(views, 0) <= 2
