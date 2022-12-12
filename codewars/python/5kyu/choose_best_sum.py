@@ -1,4 +1,4 @@
-# UNFINISHED, this does not workk
+# UNFINISHED, this does not work
 def choose_best_sum(t, k, ls):
     # parameters:
     # t = max number that the sum of k distances can be
