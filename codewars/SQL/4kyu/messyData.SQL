@@ -1,16 +1,11 @@
---  ¯\_ (ツ)_/¯
-/*
-determining credit limit for customers is too care -> means credit limits are too low?
-so we increase them and upsell.. bank... stuff i guess idk i'm not fintech
-*/
-
-/*
+/* 
 in prospects table, name formats vary:
 "First-name Last-name"
 "Last-name, First-name" <- note the comma
-And all the cases are jumbled up too
 Some have titles, like Dr. or Jr.
+
 -- possible conditions:
+-- has a ',' in the middle
 -- has a XX. title at START
 -- has a XX. title at END
 -- the entries with XX. titles NEVER intersect with names split by ","
@@ -20,6 +15,7 @@ Starts:
 -- Ms., Mrs., Mr., Dr., Miss
 */
 
+-- let's make a view with a union of filtered queries from "prospects"
 CREATE VIEW agency_names AS
 
 -- names in "last_name, first_name" format (1200 rows)
@@ -55,7 +51,6 @@ FROM prospects
 WHERE full_name LIKE 'MISS%'
 OR full_name LIKE 'Miss%'
 OR full_name LIKE 'miss%'
-
 
 -- if format = FIRST LAST XX. or other third word ( rows)
 UNION
@@ -95,21 +90,7 @@ WHERE full_name NOT LIKE '%.%' AND full_name NOT LIKE '%,%'
 SELECT INITCAP(a.first_name) as first_name, INITCAP(a.last_name) as last_name, MAX(c.credit_limit) as old_limit, MAX(a.credit_limit) as new_limit
 FROM agency_names AS a -- call the view
 JOIN customers AS c ON UPPER(c.first_name) = UPPER(a.first_name) -- join the tables
--- WHERE MAX(a.credit_limit) > MAX(c.credit_limit) -- where we found a higher credit limit est.
 GROUP BY a.first_name, a.last_name -- group by the names to get max credit limit
 HAVING MAX(a.credit_limit) > MAX(c.credit_limit) -- where we found a higher credit limit est.
 ORDER BY a.first_name ASC -- alphabetical
 ;
-
--- SELECT full_name 
--- FROM prospects
--- WHERE full_name NOT IN (
---   SELECT full_name
---   FROM agency_names
--- )
--- ;
-
--- select * 
--- from prospects as p
--- join customers as c on -- name stuff
--- where p.credit_limit > c.credit_limit
