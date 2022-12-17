@@ -1,3 +1,5 @@
+-- NOTE: Did not complete. It looks good but I missed something.
+
 /* 
 in prospects table, name formats vary:
 "First-name Last-name"
@@ -93,4 +95,35 @@ JOIN customers AS c ON UPPER(c.first_name) = UPPER(a.first_name) -- join the tab
 GROUP BY a.first_name, a.last_name -- group by the names to get max credit limit
 HAVING MAX(a.credit_limit) > MAX(c.credit_limit) -- where we found a higher credit limit est.
 ORDER BY a.first_name ASC -- alphabetical
+;
+
+
+-- ACTUAL SOLUTION:
+-- These "indeces" save these values to be callable later
+-- i.e. in customers, we save all the NAMES in both 
+-- all in lowercase to match case
+CREATE INDEX ON customers (
+    -- "first last"
+    lower(first_name || ' ' || last_name), 
+    -- "first,last"
+    lower(first_name || ',' || last_name));
+CREATE INDEX ON prospects (
+    -- "first last", "last, first", etc.
+    lower(full_name));
+
+-- Get all the requested values from both tables
+SELECT c.first_name,
+       c.last_name,
+       c.credit_limit AS old_limit,
+       max(p.credit_limit) AS new_limit
+FROM customers c JOIN prospects p
+    ON lower(full_name) IN ( -- See if the full name in lower case appears in either set of first+last name combos from "customers" 
+        lower(c.first_name || ' ' || c.last_name), -- THIS IS THE PART that is wack to me
+        lower(c.last_name || ', ' || c.first_name)
+    )
+-- group by customers that have a higher new credit estimate
+GROUP BY c.id 
+  HAVING max(p.credit_limit) > a.credit_limit -- insert the highest credit est found
+ORDER BY first_name, last_name -- order alphabetically
+-- this just works i guess?
 ;
