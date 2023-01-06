@@ -2,6 +2,20 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const mongoose = require("mongoose");
+
+// AdminJS Stuff
+const AdminJS = require('adminjs')
+const AdminJSExpress = require('@adminjs/express')
+const AdminJSMongoose = require('@adminjs/mongoose')
+const Event = require('./models/Event.js') 
+const User = require('./models/User.js') 
+const PORT = 5000;
+AdminJS.registerAdapter({
+    Resource: AdminJSMongoose.Resource,
+    Database: AdminJSMongoose.Database,
+})
+
+
 const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
@@ -54,6 +68,12 @@ app.get("'", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
 })
 
+
+
+
+
+
+
 //Connect To Database
 connectDB().then(() => {
   //Server Running
@@ -62,4 +82,37 @@ connectDB().then(() => {
       `Server is running on ${process.env.PORT}, you better catch it!`
     );
   });
+
 });
+
+
+const start = async () => {
+    const app = express()
+
+    // await mongoose.connect("mongodb://127.0.0.1:27017/")
+    // await connectDB();
+    console.log(Event);
+
+    const adminOptions = {
+        // We pass Event to `resources`
+        resources: [Event, User],
+    }
+    // Please note that some plugins don't need you to create AdminJS instance manually,
+    // instead you would just pass `adminOptions` into the plugin directly,
+    // an example would be "@adminjs/hapi"
+    const admin = new AdminJS(adminOptions)
+
+    const adminRouter = AdminJSExpress.buildRouter(admin)
+    app.use(admin.options.rootPath, adminRouter)
+
+    app.listen(PORT, () => {
+        console.log(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`)
+    })
+}
+
+start();
+
+
+
+
+
