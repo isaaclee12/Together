@@ -1,1 +1,7 @@
-100Devs/node_modules
+node_modules
+.env
+.vscode
+build
+.DS_Store
+.mongo
+formLogic.txt
