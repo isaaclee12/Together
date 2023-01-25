@@ -33,6 +33,7 @@ export default function FormRecurringDates() {
       formData.recurring.days.push(name);
     }
     setFormData({ ...formData });
+    console.log("days selected:", formData.recurring.days);
   }
 
   // This handles the value change when a day of the week for a weekly recurring event is selected
