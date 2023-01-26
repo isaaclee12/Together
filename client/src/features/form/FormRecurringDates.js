@@ -18,22 +18,34 @@ export default function FormRecurringDates() {
     }
   }, [formData.recurring, formData.recurring.rate])
 
+  // Dictionary of days of week to ISO day-of-week numbers
+  const daysOfWeekNums = {
+    "Monday": 1,
+    "Tuesday": 2,
+    "Wednesday": 3,
+    "Thursday": 4,
+    "Friday": 5,
+    "Saturday": 6,
+    "Sunday": 7
+  }
+
   // This handles the value change when a recurrence rate checkbox is selected
   const handleDaysOfWeekChange = e => {
     
     const { name } = e.target;
+    const dayNum = daysOfWeekNums[name];
     
     //if day is already checked, uncheck it
-    if (formData.recurring.days.includes(name)) {
+    if (formData.recurring.days.includes(dayNum)) {
       formData.recurring.days = formData.recurring.days.filter(day => {
-        return day !== name;
+        return day !== dayNum;
       });
     } else {
       //otherwise check it
-      formData.recurring.days.push(name);
+      formData.recurring.days.push(dayNum);
     }
     setFormData({ ...formData });
-    console.log("days selected:", formData.recurring.days);
+    console.log(formData.recurring.days);
   }
 
   // This handles the value change when a day of the week for a weekly recurring event is selected
@@ -93,7 +105,7 @@ export default function FormRecurringDates() {
               value="Monday"
               name="Monday"
               id="Monday"
-              checked={!!formData.recurring.days.includes("Monday")}
+              checked={!!formData.recurring.days.includes(daysOfWeekNums["Monday"])}
               className="mx-1 outline-non text-gray-800"
             />
             <p>Monday</p>
@@ -107,7 +119,7 @@ export default function FormRecurringDates() {
               value="Tuesday"
               name="Tuesday"
               id="Tuesday"
-              checked={!!formData.recurring.days.includes("Tuesday")}
+              checked={!!formData.recurring.days.includes(daysOfWeekNums["Tuesday"])}
               className=" mx-1 outline-non text-gray-800"
             />
             <p>Tuesday</p>
@@ -121,7 +133,7 @@ export default function FormRecurringDates() {
               value="Wednesday"
               name="Wednesday"
               id="Wednesday"
-              checked={!!formData.recurring.days.includes("Wednesday")}
+              checked={!!formData.recurring.days.includes(daysOfWeekNums["Wednesday"])}
               className=" mx-1 outline-non text-gray-800"
             />
             <p>Wednesday</p>
@@ -134,7 +146,7 @@ export default function FormRecurringDates() {
               onChange={handleDaysOfWeekChange}
               value="Thursday"
               name="Thursday"
-              checked={!!formData.recurring.days.includes("Thursday")}
+              checked={!!formData.recurring.days.includes(daysOfWeekNums["Thursday"])}
               className="mx-1 outline-non text-gray-800"
             />
             <p>Thursday</p>
@@ -147,7 +159,7 @@ export default function FormRecurringDates() {
               onChange={handleDaysOfWeekChange}
               value="Friday"
               name="Friday"
-              checked={!!formData.recurring.days.includes("Friday")}
+              checked={!!formData.recurring.days.includes(daysOfWeekNums["Friday"])}
               className=" mx-1 outline-non text-gray-800"
             />
             <p>Friday</p>
@@ -160,7 +172,7 @@ export default function FormRecurringDates() {
               onChange={handleDaysOfWeekChange}
               value="Saturday"
               name="Saturday"
-              checked={!!formData.recurring.days.includes("Saturday")}
+              checked={!!formData.recurring.days.includes(daysOfWeekNums["Saturday"])}
               className="mx-1 outline-non text-gray-800"
             />
             <p>Saturday</p>
@@ -173,7 +185,7 @@ export default function FormRecurringDates() {
               onChange={handleDaysOfWeekChange}
               value="Sunday"
               name="Sunday"
-              checked={!!formData.recurring.days.includes("Sunday")}
+              checked={!!formData.recurring.days.includes(daysOfWeekNums["Sunday"])}
               className="mx-1 outline-non text-gray-800"
             />
             <p>Sunday</p>

@@ -15,6 +15,7 @@ const createEventsArray = ({
   firstEventStart,
   firstEventEnd,
   lastEventStart,
+  dayOfWeekOffset
 }) => {
   // If event is not recurring, generate just one event for dates array and return.
   if (recurring.rate === "noRecurr") {
@@ -43,11 +44,35 @@ const createEventsArray = ({
     start: firstEventStart,
     end: lastEventStart,
   });
+  console.log(dateRange);
 
-  // Filter out dates that are not recurring
+  // Offset the recurring weekdays concurrently with the date
+  // if the conversion from local time to UTC timestamp moves day of month forward by 1
+  console.log("BEFORE:", recurring.days);
+  if (dayOfWeekOffset === 1) {
+    // for every recurring weekday, offset each by 1, except 7 which loops back to 1
+    recurring.days = recurring.days.map(day => {
+      if (day === 7) {
+        return 1;
+      }
+      return day + 1;
+    });
+  }
+  console.log("AFTER:", recurring.days);
+
+  dateRange.forEach((date) => {
+    let i = format(date, "i");
+    console.log("ISO DOW: '"+i+"'");
+    if (recurring.days.includes(parseInt(format(date, "i")))) {
+      console.log(i, "in array");
+    }
+  });
+
+  // Filter the data for the dates that occur on the chosen weekdays
   const eventStartDates = dateRange.filter(date =>
-    recurring.days.includes(format(date, "cccc"))
+    recurring.days.includes(parseInt(format(date, "i")))
   );
+  console.log(eventStartDates);
 
   // Recurring events have the same group id. This allows deleting them all at once by this id.
   const groupId = nanoid();

@@ -1,4 +1,5 @@
 import { parseISO, format } from "date-fns";
+import { useFormContext } from "contexts/FormContext";
 
 export const getMatchMonthAndYear = (monthToMatch, yearToMatch, events) => {
   if (!events.length) return [];
@@ -22,7 +23,7 @@ export const getEventsByDayNumber = (currentDay, allEvents) => {
   });
 };
 
-export const formatToLocalTime = date => {
+export const formatToLocalTime = (date) => {
   const isoDate = parseISO(date);
   return format(isoDate, "p");
 };

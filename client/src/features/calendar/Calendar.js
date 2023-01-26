@@ -21,6 +21,8 @@ const Calendar = ({ date }) => {
   const days = Array.from({ length: date.daysInMonth }, (_, i) => {
     const currentDay = i + 1;
 
+    // TODO: Modify the dates here!!!
+
     //Creates dateObject using month spelled out in a string, currentDay and year
     const dateObject = parse(
       `${date.month}, ${currentDay}, ${date.year}`,

@@ -99,6 +99,7 @@ const createEventSchema = Joi.object({
       "date.max":
         '"lastEventStart" must be within 90 days of "ref:firstEventStart"',
     }),
+  dayOfWeekOffset: Joi.number().min(0).max(1),
   recurring: Joi.object({
     // Rate is either "noRecurr" or "weekly"
     rate: Joi.string()
@@ -115,14 +116,21 @@ const createEventSchema = Joi.object({
         .min(1)
         .max(7)
         .items(
-          Joi.string().valid(
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
+          Joi.number().valid(
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+            // "Monday",
+            // "Tuesday",
+            // "Wednesday",
+            // "Thursday",
+            // "Friday",
+            // "Saturday",
+            // "Sunday"
           )
         ),
     }).required(),

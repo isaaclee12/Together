@@ -6,6 +6,7 @@ require("express-async-errors");
 module.exports = {
   create: async (req, res) => {
     const formData = req.body;
+    console.log("CREATING")
     const events = createEventsArray(formData);
 
     // If none of the days of the week selected is between start and end dates
