@@ -39,8 +39,8 @@ const useProvideForm = () => {
       // Note: "Africa/Abidjan" has no UTC offset
       const utcDay =  format(utcToZonedTime(firstEventStart, "Africa/Abidjan"),"d");
       const currentTimezoneDay = format(firstEventStart, "d");
-      console.log("Current timezone:", firstEventStart.getDate());
-      console.log("UTC:", utcToZonedTime(firstEventStart, "Africa/Abidjan"));
+      // console.log("Current timezone:", firstEventStart.getDate());
+      // console.log("UTC:", utcToZonedTime(firstEventStart, "Africa/Abidjan"));
       
       // detect if UTC conversion changes the date, in which case we change the days of the week
       // if diff, day of week offset = 1, else 0

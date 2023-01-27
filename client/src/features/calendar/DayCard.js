@@ -1,5 +1,4 @@
-import { isSameDay, format, sub, parseISO } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
+import { isSameDay, format } from "date-fns";
 import React from "react";
 import Event from "./Event";
 import { useFormModalContext } from "contexts/FormModalContext";
@@ -17,41 +16,13 @@ const DayCard = ({ date, events }) => {
   //Checks if current day matches date
   const sameDayCheck = isSameDay(date, new Date())
 
-  //Aplies styling if isSameDay is true
+  //Applies styling if isSameDay is true
   const currentDayStyles = sameDayCheck === true ? { backgroundColor: "#BFD0D8" } : {};
-
-
-
-  /// NEW CODE
-  // if (events.length > 0) {
-  //   console.log("before:", events);
-  // }
-  events.forEach(event => {
-    const start = new Date(event.startAt); 
-    // console.log(start);
-    // console.log("\ncurrent timezone:", format(start, "d"));
-    // console.log("UTC:", format(utcToZonedTime(start, "Africa/Abidjan"), "d"));
-    if (format(start, "d") !== format(utcToZonedTime(start, "Africa/Abidjan"), "d")) {
-      // console.log("Correct Date:", sub(start, { days: 1 }));
-      const datetime = sub(start, { days: 1 });
-      console.log("Correct Date:", format(datetime, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
-      event.startAt = format(datetime, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-      // return format(sub(start, { days: 1 }), "p");
-    }
-  });
-
-  if (events.length > 0) {
-    console.log("after:", events);
-  }
 
   // Sort events by startAt property
   let sortedEvents = [...events].sort(
     (a, b) => new Date(a.startAt) - new Date(b.startAt)
   );
-
-  if (sortedEvents.length > 0) {
-    console.log("sorted:", sortedEvents);
-  }
 
   return (
     <div

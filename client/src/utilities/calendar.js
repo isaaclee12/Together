@@ -2,7 +2,10 @@ import { parseISO, format } from "date-fns";
 import { useFormContext } from "contexts/FormContext";
 
 export const getMatchMonthAndYear = (monthToMatch, yearToMatch, events) => {
+  // if (events == null) return [];
   if (!events.length) return [];
+
+  // console.log("CALENDAR PLS:", events);
 
   const allMatchedEvents = events.filter(event => {
     const isoDate = parseISO(event.startAt);
