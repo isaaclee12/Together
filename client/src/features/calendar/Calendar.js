@@ -36,29 +36,6 @@ const Calendar = ({ date }) => {
     };
   });
 
-  // useEffect(() => {
-  //     /// NEW CODE
-  //     if (events) {
-  //       // console.log("before:", events);
-  //       events.forEach(event => {
-  //         const start = new Date(event.startAt);
-
-  //         // console.log(start);
-  //         // console.log("\ncurrent timezone:", format(start, "d"));
-  //         // console.log("UTC:", format(utcToZonedTime(start, "Africa/Abidjan"), "d"));
-
-  //         if (format(start, "d") !== format(utcToZonedTime(start, "Africa/Abidjan"), "d")) {
-  //           const datetime = sub(start, { days: 1 });
-  //           // console.log("corrected:", event.id, event.title, "from:", start, "to:", datetime)
-  //           event.startAt = format(datetime, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-  //         }
-
-  //       });
-  //       // console.log("after", events);
-  //       setEvents(...events);
-  //     }
-  // }, [events])
-
   useEffect(() => {
     setLoading(true);
     // Fetch events from server
